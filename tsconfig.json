@@ -1,0 +1,19 @@
+{
+  "extends": "@tsconfig/node18/tsconfig.json",
+  "exclude": [
+    "packages"
+  ],
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "@core/*": [
+        "./packages/core/src/*"
+      ],
+      "@function/*": [
+        "./packages/functions/src/*"
+      ]
+    }
+  }
+}
