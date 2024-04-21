@@ -7,11 +7,13 @@
     "typecheck": "tsc -noEmit"
   },
   "devDependencies": {
+    "@types/http-errors": "^2.0.4",
     "@types/node": "^20.11.30",
     "sst": "^2.41.4",
     "vitest": "^1.4.0"
   },
   "dependencies": {
+    "http-errors": "^2.0.0",
     "http-status-codes": "^2.3.0",
     "mongodb": "^6.5.0"
   }

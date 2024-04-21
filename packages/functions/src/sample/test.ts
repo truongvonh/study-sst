@@ -1,10 +1,13 @@
 import { DatabaseCollectionEnum, connectToMongo } from "@core/databases";
 import { AppResponse } from "@core/shared";
-import middy from "@middy/core";
-import httpErrorHandler from "@middy/http-error-handler";
-import { LambdaFunctionURLEvent } from "aws-lambda";
+import {
+  APIGatewayProxyHandlerV2WithJWTAuthorizer,
+  LambdaFunctionURLEvent,
+} from "aws-lambda";
 
-const process = async (lambdaEvent: LambdaFunctionURLEvent) => {
+const handler: APIGatewayProxyHandlerV2WithJWTAuthorizer = async (
+  lambdaEvent: LambdaFunctionURLEvent
+) => {
   const mongoDB = await connectToMongo();
 
   const data = await mongoDB
@@ -18,8 +21,8 @@ const process = async (lambdaEvent: LambdaFunctionURLEvent) => {
     .responseServerless();
 };
 
-const handler = middy(process)
-  // .use(jsonBodyParser())
-  .use(httpErrorHandler());
+// const handler = middy<APIGatewayProxyHandlerV2WithJWTAuthorizer>(process)
+// .use(jsonBodyParser())
+// .use(httpErrorHandler());
 
 export { handler };

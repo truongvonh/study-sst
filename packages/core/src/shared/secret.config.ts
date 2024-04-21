@@ -1,13 +1,5 @@
-import { Config, ConfigTypes } from "sst/node/config";
-
 export enum AppConfigEnum {
   MONGODB_CONNECTION_URL = "MONGODB_CONNECTION_URL",
+  USER_POOL_ID = "USER_POOL_ID",
+  CLIENT_ID = "CLIENT_ID",
 }
-
-export interface IAppConfig extends ConfigTypes {
-  MONGODB_CONNECTION_URL: string;
-}
-
-export const getAppConfig = (config: AppConfigEnum) => {
-  return (Config as IAppConfig)[config];
-};

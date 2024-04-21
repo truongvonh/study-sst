@@ -1,4 +1,5 @@
 import { AppResponse } from "./app-response.share";
-import { AppConfigEnum, IAppConfig, getAppConfig } from "./secret.config";
+import { throwExceptionIf } from "./exception.share";
+import { AppConfigEnum } from "./secret.config";
 
-export { AppConfigEnum, AppResponse, IAppConfig, getAppConfig };
+export { AppConfigEnum, AppResponse, throwExceptionIf };
