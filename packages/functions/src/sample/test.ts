@@ -10,6 +10,8 @@ const handler: APIGatewayProxyHandlerV2WithJWTAuthorizer = async (
 ) => {
   const mongoDB = await connectToMongo();
 
+  console.log({ lambdaEvent });
+
   const data = await mongoDB
     .collection(DatabaseCollectionEnum.Strategy)
     .find()

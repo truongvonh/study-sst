@@ -19,6 +19,6 @@ const process = async (lambdaEvent: LambdaFunctionURLEvent) => {
     .responseServerless();
 };
 
-const handler = middy(process).use(jsonBodyParser()).use(httpErrorHandler());
-
-export { handler };
+export const handler = middy(process)
+  .use(jsonBodyParser())
+  .use(httpErrorHandler());

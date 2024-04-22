@@ -1,4 +1,8 @@
-import { CognitoUser, CognitoUserPool } from "amazon-cognito-identity-js";
+import {
+  AuthenticationDetails,
+  CognitoUser,
+  CognitoUserPool,
+} from "amazon-cognito-identity-js";
 import { Config } from "sst/node/config";
 
 const poolData = {
@@ -52,4 +56,46 @@ const confirm = (
   );
 };
 
-export { confirm, register };
+export interface ILoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface ILoginResponse {
+  accessToken?: string;
+  idToken?: string;
+  refreshToken?: string;
+  expiration?: number;
+}
+
+const login = (
+  payload: ILoginPayload
+): Promise<[Error | null, ILoginResponse]> => {
+  const authenticationData = {
+    Username: payload.email,
+    Password: payload.password,
+  };
+  const authenticationDetails = new AuthenticationDetails(authenticationData);
+
+  const cognitoUser = new CognitoUser({
+    Username: payload.email,
+    Pool: userPool,
+  });
+
+  return new Promise((resolve, reject) =>
+    cognitoUser.authenticateUser(authenticationDetails, {
+      onFailure: (err) => resolve([err, {}]),
+      onSuccess: (session, userConfirmationNecessary) =>
+        resolve([
+          null,
+          {
+            accessToken: session.getIdToken().getJwtToken(),
+            refreshToken: session.getRefreshToken().getToken(),
+            expiration: session.getAccessToken().getExpiration(),
+          },
+        ]),
+    })
+  );
+};
+
+export { confirm, login, register };

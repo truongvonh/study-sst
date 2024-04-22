@@ -1,8 +1,13 @@
 import { AppConfigEnum } from "@core/shared";
 import { Config, StackContext } from "sst/constructs";
+import { Secret } from "sst/constructs/Secret";
 
-export function getSecret({ stack }: StackContext) {
-  return Object.values(AppConfigEnum).map(
-    (config) => new Config.Secret(stack, config)
+let secrets: Secret[] = [];
+
+export function SecretStack({ stack }: StackContext) {
+  secrets = Object.values(AppConfigEnum).map(
+    (secretVal) => new Config.Secret(stack, secretVal)
   );
 }
+
+export { secrets };

@@ -1,16 +1,13 @@
-import { routerAuth } from "@function/auth/router-define";
-import { routerSample } from "@function/sample";
+import { routerSample } from "@function/sample/router-define";
 import { ApiGatewayV1Api, Cognito, StackContext } from "sst/constructs";
-import { getSecret } from "./secret.stack";
+import { secrets } from "./secret.stack";
 
-export function APIStack({ stack }: StackContext) {
-  const secrets = getSecret({ stack } as StackContext);
-
+export function StackPrivateStack({ stack }: StackContext) {
   const auth = new Cognito(stack, "Auth", {
-    login: ["email"],
+    login: ["email", "phone"],
   });
 
-  const restAPIV2 = new ApiGatewayV1Api(stack, "restAPI", {
+  const restAPIPrivate = new ApiGatewayV1Api(stack, "restAPIPrivate", {
     authorizers: {
       jwt: {
         type: "user_pools",
@@ -26,17 +23,13 @@ export function APIStack({ stack }: StackContext) {
     },
   });
 
-  const restAPIAuth = new ApiGatewayV1Api(stack, "restAPIAuth");
-  restAPIAuth.addRoutes(stack, routerAuth);
-  restAPIAuth.bind(secrets);
-
-  auth.attachPermissionsForAuthUsers(stack, [restAPIV2]);
-  restAPIV2.addRoutes(stack, routerSample);
-  restAPIV2.bind(secrets);
+  auth.attachPermissionsForAuthUsers(stack, [restAPIPrivate]);
+  restAPIPrivate.addRoutes(stack, routerSample);
+  restAPIPrivate.bind(secrets);
 
   stack.addOutputs({
-    ApiGatewayV1Api: restAPIV2.url,
-    UserPoolIds: auth.userPoolId,
+    ApiGatewayV1Api: restAPIPrivate.url,
+    UserPoolId: auth.userPoolId,
     UserPoolClientId: auth.userPoolClientId,
   });
 }

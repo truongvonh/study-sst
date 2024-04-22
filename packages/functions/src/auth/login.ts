@@ -4,20 +4,19 @@ import httpErrorHandler from "@middy/http-error-handler";
 import jsonBodyParser from "@middy/http-json-body-parser";
 import { LambdaFunctionURLEvent } from "aws-lambda";
 import createError from "http-errors";
-import { IRegisterPayload, register } from "./cognito.service";
+import { ILoginPayload, ILoginResponse, login } from "./cognito.service";
 
 const process = async (lambdaEvent: LambdaFunctionURLEvent) => {
-  const [err, res] = await register(
-    lambdaEvent.body as unknown as IRegisterPayload
-  );
+  const [err, res] = await login(lambdaEvent.body as unknown as ILoginPayload);
 
   throwExceptionIf(err, createError.UnprocessableEntity, err?.message);
 
-  return new AppResponse()
+  return new AppResponse<ILoginResponse>()
     .setData(res)
-    .setMessage("sign-up-success")
+    .setMessage("login-success")
     .responseServerless();
 };
+
 export const handler = middy(process)
   .use(jsonBodyParser())
   .use(httpErrorHandler());
