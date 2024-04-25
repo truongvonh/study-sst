@@ -60,8 +60,4 @@ export class AppResponse<T, M = IMetadata> {
 
     return serverlessRes;
   }
-
-  public response() {
-    return this.combineData();
-  }
 }

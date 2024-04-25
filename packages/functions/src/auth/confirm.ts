@@ -6,10 +6,8 @@ import { LambdaFunctionURLEvent } from "aws-lambda";
 import createHttpError from "http-errors";
 import { IConfirmPayload, confirm } from "./cognito.service";
 
-const process = async (lambdaEvent: LambdaFunctionURLEvent) => {
-  const [err, res] = await confirm(
-    lambdaEvent.body as unknown as IConfirmPayload
-  );
+const process = async (evt: LambdaFunctionURLEvent) => {
+  const [err, res] = await confirm(evt.body as unknown as IConfirmPayload);
 
   throwExceptionIf(err, createHttpError.BadRequest, err?.message);
 

@@ -10,8 +10,6 @@ const handler: APIGatewayProxyHandlerV2WithJWTAuthorizer = async (
 ) => {
   const mongoDB = await connectToMongo();
 
-  console.log({ lambdaEvent });
-
   const data = await mongoDB
     .collection(DatabaseCollectionEnum.Strategy)
     .find()
@@ -22,9 +20,5 @@ const handler: APIGatewayProxyHandlerV2WithJWTAuthorizer = async (
     .setMessage("test-lambda-success")
     .responseServerless();
 };
-
-// const handler = middy<APIGatewayProxyHandlerV2WithJWTAuthorizer>(process)
-// .use(jsonBodyParser())
-// .use(httpErrorHandler());
 
 export { handler };

@@ -6,10 +6,8 @@ import { LambdaFunctionURLEvent } from "aws-lambda";
 import createError from "http-errors";
 import { IRegisterPayload, register } from "./cognito.service";
 
-const process = async (lambdaEvent: LambdaFunctionURLEvent) => {
-  const [err, res] = await register(
-    lambdaEvent.body as unknown as IRegisterPayload
-  );
+const process = async (evt: LambdaFunctionURLEvent) => {
+  const [err, res] = await register(evt.body as unknown as IRegisterPayload);
 
   throwExceptionIf(err, createError.UnprocessableEntity, err?.message);
 

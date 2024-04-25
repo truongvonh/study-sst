@@ -6,8 +6,8 @@ import { LambdaFunctionURLEvent } from "aws-lambda";
 import createError from "http-errors";
 import { ILoginPayload, ILoginResponse, login } from "./cognito.service";
 
-const process = async (lambdaEvent: LambdaFunctionURLEvent) => {
-  const [err, res] = await login(lambdaEvent.body as unknown as ILoginPayload);
+const process = async (evt: LambdaFunctionURLEvent) => {
+  const [err, res] = await login(evt.body as unknown as ILoginPayload);
 
   throwExceptionIf(err, createError.UnprocessableEntity, err?.message);
 
