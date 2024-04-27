@@ -3,6 +3,9 @@ export enum DatabaseCollectionEnum {
   SellOrder = "sellOrder",
   BuyOrder = "buyOrder",
   Wallet = "wallet",
+  User = "user",
+  Vendor = "vendor",
+  Action = "action",
 }
 
 export enum DatabaseEnum {

@@ -1,4 +1,5 @@
 import { routerSample } from "@function/sample/router-define";
+import { routerWallet } from "@function/wallet/router-define";
 import { ApiGatewayV1Api, Cognito, StackContext } from "sst/constructs";
 import { secrets } from "./secret.stack";
 
@@ -25,6 +26,7 @@ export function StackPrivateStack({ stack }: StackContext) {
 
   auth.attachPermissionsForAuthUsers(stack, [restAPIPrivate]);
   restAPIPrivate.addRoutes(stack, routerSample);
+  restAPIPrivate.addRoutes(stack, routerWallet);
   restAPIPrivate.bind(secrets);
 
   stack.addOutputs({

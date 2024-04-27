@@ -9,7 +9,7 @@ import { IConfirmPayload, confirm } from "./cognito.service";
 const process = async (evt: LambdaFunctionURLEvent) => {
   const [err, res] = await confirm(evt.body as unknown as IConfirmPayload);
 
-  throwExceptionIf(err, createHttpError.BadRequest, err?.message);
+  throwExceptionIf(err, createHttpError.BadRequest, err?.message, err?.stack);
 
   return new AppResponse()
     .setData(res)
@@ -17,6 +17,7 @@ const process = async (evt: LambdaFunctionURLEvent) => {
     .responseServerless();
 };
 
-export const handler = middy(process)
+export const handler = middy()
   .use(jsonBodyParser())
-  .use(httpErrorHandler());
+  .use(httpErrorHandler())
+  .handler(process);

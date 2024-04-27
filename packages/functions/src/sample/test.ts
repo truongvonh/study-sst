@@ -1,24 +1,7 @@
-import { DatabaseCollectionEnum, connectToMongo } from "@core/databases";
-import { AppResponse } from "@core/shared";
-import {
-  APIGatewayProxyHandlerV2WithJWTAuthorizer,
-  LambdaFunctionURLEvent,
-} from "aws-lambda";
+import middy from "@middy/core";
+import httpErrorHandler from "@middy/http-error-handler";
+import { ILambdaEventWithJWTAuth } from "src/shared/interfaces/lambda-gateway-jwt.interface";
 
-const handler: APIGatewayProxyHandlerV2WithJWTAuthorizer = async (
-  lambdaEvent: LambdaFunctionURLEvent
-) => {
-  const mongoDB = await connectToMongo();
+const run = async (lambdaEvent: ILambdaEventWithJWTAuth) => {};
 
-  const data = await mongoDB
-    .collection(DatabaseCollectionEnum.Strategy)
-    .find()
-    .toArray();
-
-  return new AppResponse()
-    .setData(data)
-    .setMessage("test-lambda-success")
-    .responseServerless();
-};
-
-export { handler };
+export const handler = middy().use(httpErrorHandler()).handler(run);

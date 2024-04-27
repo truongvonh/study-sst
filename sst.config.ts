@@ -1,5 +1,6 @@
 import { SSTConfig } from "sst";
 import { StackAPIPublicForAuth } from "stacks/api-auth.stack";
+import { QueueConfirmAuthStack } from "stacks/queue.stack";
 import { SecretStack } from "stacks/secret.stack";
 import { StackPrivateStack } from "./stacks/api.stack";
 
@@ -14,6 +15,7 @@ export default {
     app
       .stack(SecretStack)
       .stack(StackAPIPublicForAuth)
-      .stack(StackPrivateStack);
+      .stack(StackPrivateStack)
+      .stack(QueueConfirmAuthStack);
   },
 } satisfies SSTConfig;
