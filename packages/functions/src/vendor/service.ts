@@ -50,8 +50,7 @@ const connectToVendor = async (email: string, vendorName: VendorName) => {
     data: auth.body,
   });
 
-  if (authRes instanceof Error)
-    throw new BadRequest("attempt-connect-vendor-failed");
+  if (authRes instanceof Error) throw new BadRequest("connect-vendor-failed");
 
   auth.response = { Cookie: authRes.headers?.["set-cookie"]?.[0] };
   auth.lastRequestTime = dayjs().valueOf();

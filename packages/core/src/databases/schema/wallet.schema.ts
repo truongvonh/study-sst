@@ -8,6 +8,7 @@ export interface WalletSchema {
   balance: number;
   updatedAt: Date;
   symbol: string;
+  type: WalletType;
 }
 
 export enum WalletAsset {
@@ -21,3 +22,8 @@ export const AssetSymbol = {
   [WalletAsset.Bitcoin]: "BTCUSDT",
   [WalletAsset.Ethereum]: "ETHUSDT",
 };
+
+export enum WalletType {
+  Sell = "SELL",
+  Buy = "BUY",
+}

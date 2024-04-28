@@ -5,14 +5,14 @@ import {
   WalletAsset,
   WalletSchema,
 } from "@core/databases/schema";
-import { AssetSymbol } from "@core/databases/schema/wallet.schema";
+import { AssetSymbol, WalletType } from "@core/databases/schema/wallet.schema";
 import { AppResponse } from "@core/shared";
+import { ILambdaEventWithJWTAuth } from "@functions/shared/interfaces";
+import { connectToVendor, getVendorAction } from "@functions/vendor/service";
 import middy from "@middy/core";
 import httpErrorHandler from "@middy/http-error-handler";
 import axios from "axios";
 import dayjs from "dayjs";
-import { ILambdaEventWithJWTAuth } from "src/shared/interfaces/lambda-gateway-jwt.interface";
-import { connectToVendor, getVendorAction } from "src/vendor/service";
 import { IBalanceResponse } from "./balance-response.interface";
 
 interface IQueryParams {
@@ -46,6 +46,7 @@ const run = async (lambdaEvent: ILambdaEventWithJWTAuth) => {
     updatedAt: dayjs().toDate(),
     // @ts-ignore
     symbol: AssetSymbol[query.asset],
+    type: query.asset == WalletAsset.USDT ? WalletType.Buy : WalletType.Sell,
   };
 
   const walletDB = await mongoDB
